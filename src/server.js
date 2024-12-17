@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino-http';
+// import pino from 'pino-http';
 import { getEnvVar } from './utils/getEnvVar.js';
 import * as contactServices from "./services/contacts-services.js";
 
