@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { handleSaveError, setUpdateSettings } from "./hooks.js";
 
 const connectShchema = new Schema({
     name:{
@@ -28,6 +29,14 @@ const connectShchema = new Schema({
     versionKey: false,
 },
 );
+
+connectShchema.post("save", handleSaveError);
+
+connectShchema.pre("findOneAndUpdate", setUpdateSettings);
+
+connectShchema.post("findOneAndUpdate", handleSaveError);
+
+export const sortByList = ["_id", "name", "phoneNumber", "email", "isFavourite", "contactType"];
 
 const ContactCollection = model("contact", connectShchema);
 
