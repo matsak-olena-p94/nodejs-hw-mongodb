@@ -17,8 +17,9 @@ export const getContacts = async ({
     if (filter.type) {
         contactsQuery.where('contactType').equals(filter.type);
       }
-    const contacts = await contactsQuery.skip(skip).limit(limit).sort({[sortBy]: sortOrder});
+
     const contactsCount = await ContactCollection.find().merge(contactsQuery).countDocuments();
+    const contacts = await contactsQuery.skip(skip).limit(limit).sort({[sortBy]: sortOrder});
     const paginationData = calcPaginationData(contactsCount, perPage, page);
     
     return {
