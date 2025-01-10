@@ -14,7 +14,7 @@ const createSessionData = ()=> ({
     refreshTokenValidUntil: Date.now() + refreshTokenLifetime,
 });
 
-export const register = async payload => {
+export const registerUser = async payload => {
     const {email, password} = payload;
     const user = await UserCollection.findOne({email});
     if(user) {
@@ -27,6 +27,7 @@ export const register = async payload => {
 
     return newUser;
 };
+
 
 export const login = async ({email, password}) => {
     const user = await UserCollection.findOne({email});

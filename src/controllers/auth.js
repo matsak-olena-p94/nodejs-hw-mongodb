@@ -1,5 +1,6 @@
 // import { accessTokenLifetime, refreshTokenLifetime } from "../constants/users.js";
 import * as authServices from "../services/auth.js";
+import { registerUser } from "../services/auth.js";
 
 const setupSession = (res, session) => {
   res.cookie("refreshToken", session.refreshToken, {
@@ -13,15 +14,34 @@ res.cookie("sessionId", session.id, {
 });
 };
 
-export const registerController = async(req, res)=> {
-    const data = await authServices.register(req.body);
+// export const registerController = async(req, res)=> {
+//      const user = await registerUser(req.body);
 
-    res.status(201).json({
-      status: 201,
-      message: 'Successfully registered a user!',
-      data,
-    });
-  };
+//     res.status(201).json({
+//       status: 201,
+//       message: 'Successfully registered a user!',
+//       data: user,
+//     });
+//   };
+
+export const registerController = async (req, res, next) => {
+  try {
+      const user = await registerUser(req.body);
+
+      // Видалення поля пароля з відповіді
+      const userWithoutPassword = { ...user._doc };
+      delete userWithoutPassword.password;
+
+      // Повернення відповіді
+      res.status(201).json({
+          status: 201,
+          message: "Successfully registered a user!",
+          data: userWithoutPassword,
+      });
+  } catch (error) {
+      next(error);
+  }
+};
 
   export const loginController = async(req, res)=> {
     const session = await authServices.login(req.body);
