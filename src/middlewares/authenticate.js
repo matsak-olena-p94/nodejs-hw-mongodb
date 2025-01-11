@@ -7,7 +7,7 @@ export const authenticate = async(req, res, next)=> {
     if(!authHeader) {
         return next(createHttpError(401, "Authorization header not found"));
     }
-    const {bearer, accessToken} = authHeader.split("");
+    const [bearer, accessToken] = authHeader.split(" ");
     if(bearer !== "Bearer") {
         return next(createHttpError(401, "Header must be Bearer type"));
     }

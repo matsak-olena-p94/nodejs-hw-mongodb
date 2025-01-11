@@ -2,9 +2,10 @@ import { Schema, model } from "mongoose";
 import { handleSaveError, setUpdateSettings } from "./hooks.js";
 
 const sessionSchema = new Schema({
-    userID: {
+    userId: {
         type: Schema.Types.ObjectId,
         ref: "user",
+        required: true, 
     },
     accessToken: {
         type: String,
