@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateBody } from "../utils/validateBody.js";
-import { authRegisterSchema, authLoginSchema } from "../validation/auth.js";
+import { authRegisterSchema, authLoginSchema, requestResetEmailSchema, resetPasswordSchema } from "../validation/auth.js";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 import * as authController from "../controllers/auth.js";
 
@@ -11,6 +11,10 @@ authRouter.post("/register", validateBody(authRegisterSchema), ctrlWrapper(authC
 authRouter.post("/login", validateBody(authLoginSchema), ctrlWrapper(authController.loginController));
 
 authRouter.post("/refresh", ctrlWrapper(authController.refreshTokenController));
+
+authRouter.post("/send-reset-email", validateBody(requestResetEmailSchema), ctrlWrapper(authController.requestResetEmailController));
+
+authRouter.post("/reset-pwd", validateBody(resetPasswordSchema), ctrlWrapper(authController.resetPasswordController));
 
 authRouter.post("/logout", ctrlWrapper(authController.logoutController));
 
