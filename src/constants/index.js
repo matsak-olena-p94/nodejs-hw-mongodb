@@ -14,4 +14,9 @@ export const SMTP = {
 
   export const UPLOADS_DIR = path.resolve("uploads");
 
+  export const CLOUDINARY = {
+    CLOUD_NAME: 'CLOUD_NAME',
+    API_KEY: 'API_KEY',
+    API_SECRET: 'API_SECRET',
+  };
   
