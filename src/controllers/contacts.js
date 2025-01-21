@@ -53,7 +53,7 @@
             else {
                 photo = await saveFileToUploadDir(req.file);
             }
-        }
+                }
         const {_id: userId} = req.user;
         const data = await contactServices.addContact({...req.body, photo, userId});
 
