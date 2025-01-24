@@ -1,6 +1,7 @@
 // import { accessTokenLifetime, refreshTokenLifetime } from "../constants/users.js";
 import * as authServices from "../services/auth.js";
 import { registerUser, requestResetToken, resetPassword } from "../services/auth.js";
+import { generateOAuthUrl } from "../utils/googleOAuth2.js";
 
 const setupSession = (res, session) => {
   res.cookie("refreshToken", session.refreshToken, {
@@ -98,5 +99,31 @@ export const resetPasswordController = async (req, res) => {
     message: 'Password has been successfully reset.',
     status: 200,
     data: {},
+  });
+};
+
+export const getGoogleOAuthUrlController = async(req, res)=> {
+  const url = generateOAuthUrl();
+  res.json({
+    status: 200,
+    message: 'Successfully get Google OAuth url!',
+    data: {
+      url,
+    },
+  });
+};
+
+export const loginWithGoogleController = async(req, res)=> {
+  const {code} = req.body;
+  const session = await authServices.loginOrRegisterWithGoogle(code);
+
+  setupSession(res, session);
+
+  res.json({
+      status: 200,
+      message: "Successfully login with Google OAuth",
+      data: {
+          accessToken: session.accessToken,
+      }
   });
 };

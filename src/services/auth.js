@@ -14,7 +14,7 @@ import fs from 'node:fs/promises';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { SMTP } from "../constants/index.js";
 import jwt from 'jsonwebtoken';
-
+import { validateCode, getUsernameFromGoogleTokenPayload } from "../utils/googleOAuth2.js";
 
 
 
@@ -152,6 +152,31 @@ export const resetPassword = async (payload) => {
     { password: encryptedPassword },
   );
 };
+
+export const loginOrRegisterWithGoogle = async code => {
+  const loginTicken = await validateCode(code);
+  const payload = loginTicken.getPayload();
+
+  let user = await UserCollection.findOne({email: payload.email});
+  if(!user) {
+      const username = getUsernameFromGoogleTokenPayload(payload);
+      const password = await bcrypt.hash(randomBytes(10).toString("base64"), 10);
+      
+      user = await UserCollection.create({
+          email: payload.email,
+          username,
+          password,
+      });
+  }
+
+  const sessionData = createSessionData();
+
+  return SessionCollection.create({
+      userId: user._id,
+      ...sessionData,
+  });
+};
+
 export const getUser = filter => UserCollection.findOne(filter);
 
 export const getSession = filter => SessionCollection.findOne(filter);

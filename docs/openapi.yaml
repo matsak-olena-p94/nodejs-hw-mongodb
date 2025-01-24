@@ -1,0 +1,22 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: My contacts app
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description:
+    This is a documentations of my contacts app
+tags:
+    - name: Contacts
+    description: Operations about contacts.
+servers:
+  - url: http://localhost:3000
+  - url: https://contacts-app-5dqh.onrender.com
+paths:
+  # тут будуть посилання на ендпоінти
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
