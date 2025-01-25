@@ -153,7 +153,7 @@ export const resetPassword = async (payload) => {
   );
 };
 
-export const loginOrRegisterWithGoogle = async code => {
+export const loginOrRegisterWithGoogle = async (code) => {
   const loginTicken = await validateCode(code);
   const payload = loginTicken.getPayload();
 

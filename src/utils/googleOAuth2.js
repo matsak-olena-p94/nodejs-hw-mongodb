@@ -28,9 +28,9 @@ export const generateOAuthUrl = ()=> {
     return url;
 };
 
-export const validateCode = async code => {
+export const validateCode = async (code) => {
     const response = await googleOAuthClient.getToken(code);
-    if(!response?.tokens?.id_token) throw createHttpError(401, "Google OAuth code invalid");
+    if(!response.tokens.id_token) throw createHttpError(401, "Google OAuth code invalid");
 
     const ticket = await googleOAuthClient.verifyIdToken({
         idToken: response.tokens.id_token,
@@ -38,7 +38,7 @@ export const validateCode = async code => {
     return ticket;
 };
 
-export const getUsernameFromGoogleTokenPayload = payload => {
+export const getUsernameFromGoogleTokenPayload = (payload) => {
     if(payload.name) return payload.name;
     let username = "";
     if(payload.given_name) {
